@@ -87,6 +87,7 @@ public class FrUsuario extends javax.swing.JFrame {
         btnNovo = new javax.swing.JButton();
         btnPesquisa = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
+        btnFiltro = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -364,6 +365,14 @@ public class FrUsuario extends javax.swing.JFrame {
         jLabel8.setText("Pesquisar:");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, -1, -1));
 
+        btnFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome C.", "Nome D.", "Cidade", "Estado", "Telefone" }));
+        btnFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltroActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -477,6 +486,7 @@ public class FrUsuario extends javax.swing.JFrame {
         }
         this.pack();
     }
+    
 
     public void readJTable() throws SQLException {
         DefaultTableModel modelo = (DefaultTableModel) tbUsuario.getModel();
@@ -652,6 +662,10 @@ public class FrUsuario extends javax.swing.JFrame {
  
     }//GEN-LAST:event_btCepKeyReleased
 
+    private void btnFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltroActionPerformed
+      
+    }//GEN-LAST:event_btnFiltroActionPerformed
+
 /**
  * @param args the command line arguments
  */
@@ -720,6 +734,7 @@ public static void main(String args[]) {
     private javax.swing.JButton btCep;
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JComboBox<String> btnFiltro;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
