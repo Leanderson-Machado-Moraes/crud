@@ -71,6 +71,7 @@ public class FrFilmes extends javax.swing.JFrame {
         btAdd = new javax.swing.JButton();
         txtPesquisar = new javax.swing.JTextField();
         btPesquisar = new javax.swing.JButton();
+        btnFiltroF = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -270,6 +271,14 @@ public class FrFilmes extends javax.swing.JFrame {
         });
         jPanel1.add(btPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 590, -1, -1));
 
+        btnFiltroF.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gênero", "Temática", " " }));
+        btnFiltroF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltroFActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnFiltroF, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 630, 170, 20));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -280,9 +289,7 @@ public class FrFilmes extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -336,7 +343,7 @@ public class FrFilmes extends javax.swing.JFrame {
             FilmeDao fd = new FilmeDao();
             f.setTitulo(edTitulo.getText());
             f.setGenero(edGenero.getText());
-            f.setLancamento(Date.valueOf(edLancamento.getText()));
+            f.setLancamento(edLancamento.getText());
             f.setTematica(edTematica.getText());
             f.setSinopse(edSin.getText());
             f.setDuracao(edDurao.getText());
@@ -358,7 +365,7 @@ public class FrFilmes extends javax.swing.JFrame {
             FilmeDao fd = new FilmeDao();
             f.setTitulo(edTitulo.getText());
             f.setGenero(edGenero.getText());
-            f.setLancamento(Date.valueOf(edLancamento.getText()));
+            f.setLancamento(edLancamento.getText());
             f.setTematica(edTematica.getText());
             f.setSinopse(edSin.getText());
             f.setDuracao(edDurao.getText());
@@ -380,16 +387,36 @@ public class FrFilmes extends javax.swing.JFrame {
     }//GEN-LAST:event_edLancamentoActionPerformed
 
     private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisarActionPerformed
-        // TODO add your handling code here:
+    
     }//GEN-LAST:event_txtPesquisarActionPerformed
 
     private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
-        try {
-            readJTableForDesc(txtPesquisar.getText());
+          try {
+             
+            int tipo = 0;
+            switch (btnFiltroF.getSelectedIndex()) {
+               
+                case 0:
+                    tipo = 0;
+                    break;
+                case 1:
+                    tipo = 1;
+
+            
+            } if (tipo == 0) {
+                FGenero(txtPesquisar.getText(), tipo);
+            } else {
+                FTematica(txtPesquisar.getText(), tipo);
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(FrFilmes.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro:" + ex.getMessage());
         }
+
     }//GEN-LAST:event_btPesquisarActionPerformed
+
+    private void btnFiltroFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltroFActionPerformed
+        
+    }//GEN-LAST:event_btnFiltroFActionPerformed
     public void controlarBtn(int op) {
         switch (op) {
             case 1:
@@ -453,6 +480,42 @@ public class FrFilmes extends javax.swing.JFrame {
             });
         }
     }
+     public void FTematica(String tematica, int tipo) throws SQLException {
+        DefaultTableModel modelo
+                = (DefaultTableModel) tbFilmes.getModel();
+        modelo.setNumRows(0);
+        FilmeDao mdao = new FilmeDao();
+        for (Filme s : mdao.filtroTematica(tematica, tipo)) {
+            modelo.addRow(new Object[]{
+                s.getId(),
+                s.getTitulo(),
+                s.getGenero(),
+                s.getLancamento(),
+                s.getTematica(),
+                s.getSinopse(),
+                s.getDuracao(),
+                s.getDiretor()
+            });
+        }
+    }
+      public void FGenero(String genero, int tipo) throws SQLException {
+        DefaultTableModel modelo
+                = (DefaultTableModel) tbFilmes.getModel();
+        modelo.setNumRows(0);
+        FilmeDao mdao = new FilmeDao();
+        for (Filme s : mdao.filtroGenero(genero, tipo)) {
+            modelo.addRow(new Object[]{
+                s.getId(),
+                s.getTitulo(),
+                s.getGenero(),
+                s.getLancamento(),
+                s.getTematica(),
+                s.getSinopse(),
+                s.getDuracao(),
+                s.getDiretor()
+            });
+        }
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -496,6 +559,7 @@ public class FrFilmes extends javax.swing.JFrame {
     private javax.swing.JButton btExcluir2;
     private javax.swing.JButton btPesquisar;
     private javax.swing.JButton btSalvar2;
+    private javax.swing.JComboBox<String> btnFiltroF;
     private javax.swing.JTextField edDiretor;
     private javax.swing.JTextField edDurao;
     private javax.swing.JTextField edGenero;

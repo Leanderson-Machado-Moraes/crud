@@ -8,7 +8,7 @@ public class Filme {
     private int id;
     private String titulo;
     private String genero;
-    private Date lancamento;
+    private String lancamento;
     private String tematica;
     private String sinopse;
     private String duracao;
@@ -17,7 +17,7 @@ public class Filme {
     public Filme(){
         
     }
-    public Filme(int id, String titulo, String genero, Date lancamento,
+    public Filme(int id, String titulo, String genero, String lancamento,
             String tematica, String sinopse, String duracao, String diretor){
         this.id = id;
         this.titulo = titulo;
@@ -64,11 +64,11 @@ public class Filme {
         this.genero = genero;
     }
 
-    public Date getLancamento() {
+    public String getLancamento() {
         return lancamento;
     }
 
-    public void setLancamento(Date lancamento) {
+    public void setLancamento(String lancamento) {
         this.lancamento = lancamento;
     }
 

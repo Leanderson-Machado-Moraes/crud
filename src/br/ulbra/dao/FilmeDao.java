@@ -41,7 +41,7 @@ public class FilmeDao {
             stmt = con.prepareStatement("INSERT INTO tbfilme(titulo ,genero, lancamento, tematica, sinopse, duracao, diretor) VALUES( ?,  ?,  ?,  ?,  ?, ?, ?)");
             stmt.setString(1, f.getTitulo());
             stmt.setString(2, f.getGenero());
-            stmt.setDate(3, (Date) f.getLancamento());
+            stmt.setString(3, f.getLancamento());
             stmt.setString(4, f.getTematica());
             stmt.setString(5, f.getSinopse());
             stmt.setString(6, f.getDuracao());
@@ -65,7 +65,7 @@ public class FilmeDao {
             stmt = con.prepareStatement("UPDATE tbFilme SET titulo = ?, genero = ?, lancamento = ?, tematica = ?, sinopse = ?, duracao = ?, diretor = ? WHERE id = ?");
             stmt.setString(1, f.getTitulo());
             stmt.setString(2, f.getGenero());
-            stmt.setDate(3, (Date) f.getLancamento());
+            stmt.setString(3, f.getLancamento());
             stmt.setString(4, f.getTematica());
             stmt.setString(5, f.getSinopse());
             stmt.setString(6, f.getDuracao());
@@ -91,7 +91,7 @@ public class FilmeDao {
                 filme.setId(rs.getInt("id"));
                 filme.setTitulo(rs.getString("titulo"));
                 filme.setGenero(rs.getString("genero"));
-                filme.setLancamento(rs.getDate("lancamento"));
+                filme.setLancamento(rs.getString("lancamento"));
                 filme.setTematica(rs.getString("tematica"));
                 filme.setSinopse(rs.getString("sinopse"));
                 filme.setDuracao(rs.getString("duracao"));
@@ -121,10 +121,11 @@ public class FilmeDao {
                 filme.setId(rs.getInt("id"));
                 filme.setTitulo(rs.getString("titulo"));
                 filme.setGenero(rs.getString("genero"));
-                filme.setLancamento(rs.getDate("lancamento"));
+                filme.setLancamento(rs.getString("lancamento"));
                 filme.setTematica(rs.getString("tematica"));
                 filme.setSinopse(rs.getString("sinopse"));
                 filme.setDuracao(rs.getString("duracao"));
+                filme.setDiretor(rs.getString("diretor"));
                 filmes.add(filme);
             }
 
@@ -136,4 +137,72 @@ public class FilmeDao {
         return filmes;
     }
 
+    public List<Filme> filtroGenero(String genero, int tipo) throws SQLException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ArrayList<Filme> filmes = new ArrayList<>();
+        String script = null;
+        try {
+
+            String s = "SELECT id, titulo, genero, tematica, duracao, diretor  FROM tbFilme where genero LIKE '%" + genero + "%'";
+          //  System.out.println(s);
+            stmt = con.prepareStatement(s);
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Filme filme = new Filme();
+                filme.setId(rs.getInt("id"));
+                filme.setTitulo(rs.getString("titulo"));
+                filme.setGenero(rs.getString("genero"));
+                filme.setLancamento("");
+                filme.setTematica(rs.getString("tematica"));
+                filme.setSinopse("");
+                filme.setDuracao(rs.getString("duracao"));
+                filme.setDiretor(rs.getString("diretor"));
+                filmes.add(filme);
+
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro" + ex.getMessage());
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        return filmes;
+
+    }
+
+    public List<Filme> filtroTematica(String tematica, int tipo) throws SQLException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ArrayList<Filme> filmes = new ArrayList<>();
+        String script = null;
+        try {
+            System.out.println("tipo:" + tipo);
+
+            stmt = con.prepareStatement("SELECT id, titulo, genero, lancamento, tematica  FROM tbFilme where tematica LIKE '%" + tematica + "%'");
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Filme filme = new Filme();
+                filme.setId(rs.getInt("id"));
+                filme.setTitulo(rs.getString("titulo"));
+                filme.setGenero(rs.getString("genero"));
+                filme.setLancamento(rs.getString("lancamento"));
+                filme.setTematica(rs.getString("tematica"));
+                filme.setSinopse("");
+                filme.setDuracao("");
+                filme.setDiretor("");
+                filmes.add(filme);
+
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro" + ex.getMessage());
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        return filmes;
+
+    }
 }
