@@ -145,7 +145,7 @@ public class FilmeDao {
         try {
 
             String s = "SELECT id, titulo, genero, tematica, duracao, diretor  FROM tbFilme where genero LIKE '%" + genero + "%'";
-          //  System.out.println(s);
+            //  System.out.println(s);
             stmt = con.prepareStatement(s);
 
             rs = stmt.executeQuery();

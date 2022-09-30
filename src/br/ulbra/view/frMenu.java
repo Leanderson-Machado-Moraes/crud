@@ -5,9 +5,17 @@
  */
 package br.ulbra.view;
 
+import br.ulbra.dao.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -154,11 +162,23 @@ public class frMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_sairActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-
+        try {
+            showRel();
+        } catch (SQLException ex) {
+            Logger.getLogger(frMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(frMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-
+        try {
+            showRelFilmes();
+        } catch (SQLException ex) {
+            Logger.getLogger(frMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(frMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void usuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariosActionPerformed
@@ -182,6 +202,33 @@ public class frMenu extends javax.swing.JFrame {
     private void filmesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_filmesMouseClicked
 
     }//GEN-LAST:event_filmesMouseClicked
+    public void showRel() throws SQLException, JRException {
+        Connection con = null;
+        try {
+         con = ConnectionFactory.getConnection();
+            JasperPrint print = JasperFillManager.fillReport("C:\\relatorio\\rel.jasper", null, con);
+            JasperViewer.viewReport(print, false);
+        } catch (SQLException | JRException ex) {
+            Logger.getLogger(frMenu.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, ex);
+        } finally {
+            con.close();
+        }
+        
+    }
+    public void showRelFilmes() throws SQLException, JRException {
+        Connection con = null;
+        try {
+         con = ConnectionFactory.getConnection();
+            JasperPrint print = JasperFillManager.fillReport("C:\\relatorio\\relatoriofilmes.jasper", null, con);
+            JasperViewer.viewReport(print, false);
+        } catch (SQLException | JRException ex) {
+            Logger.getLogger(frMenu.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, ex);
+        } finally {
+            con.close();
+        }
+    }
 
     /**
      * @param args the command line arguments
